@@ -68,5 +68,5 @@ add_action('wp_enqueue_scripts', function() {
     }
 });
 
-file_put_contents(WP_CONTENT_DIR . '/debug-shortcodes.txt', 'Shortcodes cargado: ' . time() . "\n", FILE_APPEND);
+// file_put_contents(WP_CONTENT_DIR . '/debug-shortcodes.txt', 'Shortcodes cargado: ' . time() . "\n", FILE_APPEND);
 
