@@ -61,7 +61,7 @@ get_header(); ?>
 
 <div class="main-content-split">
     <div class="results-column">
-        <h1 class="tipo-title">Catálogo de Inmuebles</h1>
+        <h1 class="tipo-title">Catálogo de Inmuebles 2</h1>
         
         <div class="inmuebles-grilla" id="inmuebles-grilla">
             <?php

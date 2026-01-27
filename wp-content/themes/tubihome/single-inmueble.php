@@ -26,8 +26,17 @@ wp_enqueue_style('dashicons');
     .detail-item .dashicons { color: #145a37; font-size: 20px; width: 20px; height: 20px; }
 
     /* Sidebar y Mapa */
-    .sidebar-box { background: white; border: 1px solid #eee; border-radius: 20px; padding: 25px; position: sticky; top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    #property-map { width: 100%; height: 350px; border-radius: 15px; margin-top: 15px; border: 1px solid #ddd; z-index: 1; }
+    .sidebar-box {
+        position: relative; /* FUNDAMENTAL */
+        width: 100%;
+    }
+    #property-map {
+        height: 350px; /* Dale una altura fija */
+        width: 100% !important;
+        border-radius: 12px;
+        overflow: hidden; /* Evita que las capas de Leaflet se asomen */
+        position: relative;
+    }
 
     @media (max-width: 992px) { 
         .property-grid { grid-template-columns: 1fr; } 
@@ -75,7 +84,7 @@ wp_enqueue_style('dashicons');
 
                 <div class="property-header">
                     <span style="background:#145a37; color:#fff; padding:6px 16px; border-radius:50px; font-size:12px; font-weight:bold; text-transform:uppercase; letter-spacing: 1px;">
-                        <?php echo esc_html($tipo); ?> en <?php echo esc_html($operacion); ?>
+                        <?php echo esc_js($tipo); ?> en <?php echo esc_js($operacion); ?>
                     </span>
                     <h1 style="margin-top:15px;"><?php the_title(); ?></h1>
                     <p class="price-tag">$<?php echo is_numeric($precio) ? number_format((float)$precio) : $precio; ?></p>
@@ -106,7 +115,7 @@ wp_enqueue_style('dashicons');
 
             <aside class="property-sidebar">
                 <div class="sidebar-box">
-                    <h3 style="margin-top:0; font-size: 1.3rem;">Ubicación</h3>
+                    <h3">Ubicación</h3>
                     <div id="property-map"></div>
                     
                     <div style="margin-top:25px;">
@@ -120,42 +129,66 @@ wp_enqueue_style('dashicons');
 
         </div>
 
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var lat = <?php echo !empty($lat) ? esc_js($lat) : '13.6929'; ?>;
-            var lng = <?php echo !empty($lng) ? esc_js($lng) : '-89.2182'; ?>;
-            var propertyTitle = "<?php echo esc_js(get_the_title()); ?>";
-            var map = L.map('property-map', {
-                scrollWheelZoom: false
-            }).setView([lat, lng], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap'
-            }).addTo(map);
-            var marker = L.marker([lat, lng]).addTo(map);
-            marker.bindPopup("<b style='color:#145a37'>" + propertyTitle + "</b>").openPopup();
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    /**
+     * 1. CONFIGURACIÓN DE DATOS
+     * Usamos las variables de PHP. Si no existen, por defecto El Salvador.
+     */
+    var lat = <?php echo !empty($lat) ? esc_js($lat) : '13.6929'; ?>;
+    var lng = <?php echo !empty($lng) ? esc_js($lng) : '-89.2182'; ?>;
+    var title = "<?php echo esc_js(get_the_title()); ?>";
 
-            // Forzar ajuste del mapa cuando el sidebar sea visible
-            function fixMap() {
-                setTimeout(function() {
-                    map.invalidateSize();
-                    map.setView([lat, lng], 15);
-                }, 200);
-            }
-            // Usar observer para detectar visibilidad del sidebar
-            var sidebar = document.querySelector('.property-sidebar');
-            if (window.IntersectionObserver && sidebar) {
-                var observer = new IntersectionObserver(function(entries) {
-                    if (entries[0].isIntersecting) {
-                        fixMap();
-                    }
-                }, { threshold: 0.1 });
-                observer.observe(sidebar);
-            } else {
-                // Fallback: forzar ajuste tras 1s
-                setTimeout(fixMap, 1000);
-            }
-        });
-        </script>
+    // Función principal para inicializar el mapa
+    function renderPropertyMap() {
+        var mapContainer = document.getElementById('property-map');
+
+        // Verificamos que el div exista y que Leaflet esté cargado
+        if (!mapContainer || typeof L === 'undefined') {
+            console.error('No se encontró el contenedor #property-map o Leaflet no está cargado.');
+            return;
+        }
+
+        // 2. LIMPIEZA
+        // Si ya hay un mapa instanciado en la ventana, lo removemos para evitar el error "Map container is already initialized"
+        if (window.propertyMap) {
+            window.propertyMap.remove();
+        }
+
+        // 3. INICIALIZACIÓN
+        // Desactivamos scrollWheelZoom para que el usuario no se quede "atrapado" haciendo scroll
+        window.propertyMap = L.map('property-map', {
+            scrollWheelZoom: false,
+            dragging: !L.Browser.mobile, // Opcional: desactivar arrastre en móviles para facilitar el scroll
+            tap: !L.Browser.mobile
+        }).setView([lat, lng], 15);
+
+        // 4. CAPA DE MAPA (Tiles)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(window.propertyMap);
+
+        // 5. MARCADOR
+        var marker = L.marker([lat, lng]).addTo(window.propertyMap);
+        marker.bindPopup("<b>" + title + "</b>").openPopup();
+
+        // 6. EL TRUCO PARA EL POSICIONAMIENTO
+        // Forzamos a Leaflet a recalcular el tamaño del div después de que el CSS se haya asentado
+        setTimeout(function() {
+            window.propertyMap.invalidateSize();
+            console.log('Mapa reajustado correctamente',marker);
+        }, 500);
+    }
+
+    // Ejecutamos la función
+    renderPropertyMap();
+
+    // Extra: Si cambias el tamaño de la ventana, el mapa se ajusta solo
+    window.addEventListener('resize', function() {
+        if (window.propertyMap) {
+            window.propertyMap.invalidateSize();
+        }
+    });
+});
+</script>
     <?php endwhile; ?>
 </main>
 
