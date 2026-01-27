@@ -1,4 +1,13 @@
+
 <?php
+// Encolar CSS y JS de splitview siempre que se use este render
+add_action('wp_enqueue_scripts', function() {
+    if (is_admin()) return;
+    wp_enqueue_style('tubihome-leaflet-zoom-fix', plugins_url('includes/leaflet-zoom-fix.css', __DIR__), [], '1.0');
+    wp_enqueue_style('tubihome-splitview-modern', plugins_url('includes/splitview-modern.css', __DIR__), [], '1.0');
+
+
+}, 20);
 // Función centralizada para renderizar la vista dividida de inmuebles (lista + mapa)
 // $query: instancia de WP_Query o array de posts
 // $args: argumentos opcionales para personalización (por ejemplo, mostrar filtros, títulos, etc)
@@ -30,7 +39,7 @@ function tubihome_render_inmuebles_splitview($query, $args = []) {
                         <?php foreach ($posts as $post): setup_postdata($post); ?>
                             <?php
                             // Seguridad: precio limpio y formato k
-                            $price_raw = get_post_meta($post->ID, 'precio', true);
+                            $price_raw = get_post_meta($post->ID, '_price', true);
                             $price_num = is_numeric($price_raw) ? (float)$price_raw : 0;
                             $price_k = $price_num >= 1000 ? number_format($price_num / 1000, 0) . 'k' : number_format($price_num, 0);
                             ?>

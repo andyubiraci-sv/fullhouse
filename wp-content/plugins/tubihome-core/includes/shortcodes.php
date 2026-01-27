@@ -51,6 +51,8 @@ add_action('wp_enqueue_scripts', function() {
     global $post;
     if (isset($post->post_content) && strpos($post->post_content, '[reporte_inmuebles') !== false) {
         $ajax_url = get_template_directory_uri() . '/ajax/ajax-inmuebles-tipo.php';
+
+        
         wp_enqueue_script('tubihome-shortcode-inmuebles', plugins_url('includes/shortcode-inmuebles.js', __DIR__), [], '1.0', true);
         wp_localize_script('tubihome-shortcode-inmuebles', 'tubihomeShortcodeAjax', [
             'ajax_url' => $ajax_url

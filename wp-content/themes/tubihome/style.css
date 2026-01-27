@@ -36,7 +36,7 @@
     top: 0;
     left: 0;
     width: 100% !important;
-    height: 320px !important;
+    height: 90vh;
     z-index: 1;
     overflow: hidden;
     display: block;
@@ -51,32 +51,24 @@
 #infinite-loader { text-align: center; margin: 32px 0; display: none; }
 .splitview-card.card-highlight { box-shadow: 0 0 0 3px #145a37; transition: box-shadow .2s; }
 /* Mostrar galería clásica solo en escritorio, carrusel solo en móvil */
-.gallery-desktop { display: none; }
-.gallery-carousel { display: flex; }
+
 
 @media (min-width: 1025px) {
-    .gallery-desktop { display: grid; grid-template-columns: 3fr 1fr; gap: 12px; }
-    .gallery-carousel { display: none !important; }
+    /* .gallery-desktop { display: grid; grid-template-columns: 3fr 1fr; gap: 12px; } */
+    /* .gallery-carousel { display: none !important; } */
 }
 @media (max-width: 1024px) {
-    .gallery-desktop { display: none !important; }
-    .gallery-carousel { display: flex; }
+    /* .gallery-desktop { display: none !important; } */
+    /* .gallery-carousel { display: flex; } */
 }
 /* ===================== GALERÍA ESCRITORIO ===================== */
 @media (min-width: 1025px) {
     .gallery-container {
-        display: grid;
-        grid-template-columns: 3fr 1fr;
-        gap: 12px;
+        display: block !important;
         margin-bottom: 2rem;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
     }
     .gallery-carousel {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0;
+        display: block !important;
         overflow: visible;
         max-width: 900px;
         margin-left: auto;
