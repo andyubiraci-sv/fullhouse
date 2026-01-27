@@ -15,22 +15,23 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(link);
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    script.onload = initMap;
+    script.onload = function() { initMap(mapDiv); };
     document.body.appendChild(script);
   } else {
-    initMap();
+    initMap(mapDiv);
   }
 
-  function initMap() {
+  function initMap(mapDiv) {
     // Centrar en El Salvador por defecto
     const map = L.map(mapDiv, { zoomControl: true }).setView([13.7, -89.2], 11);
-    // Asegura que los controles de zoom estén visibles en la esquina superior izquierda
     map.zoomControl.setPosition('topleft');
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap',
+    // Capa visual moderna tipo CartoDB Positron
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors & CartoDB',
       maxZoom: 18,
     }).addTo(map);
-    window.tubihomeMap = map;
+    // Guarda la instancia del mapa en el div
+    mapDiv._leafletMap = map;
     // Botón 'Buscar en esta área'
     const btnBuscar = document.getElementById('btn-buscar-area');
     let moved = false;

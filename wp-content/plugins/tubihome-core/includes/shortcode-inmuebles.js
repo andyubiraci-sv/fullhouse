@@ -27,8 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 // Sincronización de pines y tarjetas Split-View
 function syncMapWithCards() {
-    if (!window.tubihomeMap) return;
-    const map = window.tubihomeMap;
+    const mapDiv = document.getElementById('splitview-map-container');
+    if (!mapDiv || !mapDiv._leafletMap) return;
+    const map = mapDiv._leafletMap;
     // Elimina pines previos
     if (map._cardMarkers) { map._cardMarkers.forEach(m => map.removeLayer(m)); }
     map._cardMarkers = [];
@@ -58,8 +59,8 @@ function syncMapWithCards() {
             card.classList.add('card-highlight');
             setTimeout(()=>card.classList.remove('card-highlight'),1200);
         });
-        card.addEventListener('mouseenter', function(){ marker.setZIndexOffset(1000); marker.openPopup(); });
-        card.addEventListener('mouseleave', function(){ marker.setZIndexOffset(0); marker.closePopup(); });
+        card.addEventListener('mouseenter', function(){ marker.setZIndexOffset(1000); marker.openPopup && marker.openPopup(); });
+        card.addEventListener('mouseleave', function(){ marker.setZIndexOffset(0); marker.closePopup && marker.closePopup(); });
         card.addEventListener('click', function(){ map.setView([parseFloat(lat),parseFloat(lng)], 15); });
     });
 }
