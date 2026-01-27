@@ -1,3 +1,9 @@
+/* Oculta la lista cuando el mapa está activo en móvil */
+@media (max-width: 600px) {
+  .results-column.hide-on-mobile {
+    display: none !important;
+  }
+}
 /* Estructura moderna para splitview */
 .splitview-root { min-height: 100vh; background: #fff; }
 .splitview-filtros { position: sticky; top: 0; z-index: 10; background: #fff; padding: 12px 0 8px 0; box-shadow: 0 2px 12px 0 rgba(20,90,55,0.04); display: flex; align-items: center; gap: 12px; }
@@ -66,6 +72,43 @@
     height: 350px;
   }
 }
+
+  /* --- MOBILE: Alternar mapa/lista con botón --- */
+  @media (max-width: 600px) {
+    .main-content-split {
+      position: relative;
+    }
+    .map-section {
+      display: none;
+      width: 100%;
+      position: static;
+      height: 350px;
+      z-index: 2;
+    }
+    .map-section.active {
+      display: block;
+    }
+    .results-column {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      height: auto;
+      position: static;
+    }
+    #splitview-toggle-map {
+      display: block;
+      width: 100%;
+      background: #145a37;
+      color: #fff;
+      border: none;
+      padding: 14px 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 0;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+  }
 
 /* Modal Amenidades: acordeón */
 #amenidades-container {

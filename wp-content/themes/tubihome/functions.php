@@ -63,13 +63,21 @@ function tubihome_setup() {
 }
 add_action('after_setup_theme', 'tubihome_setup');
 
+
 function tubihome_enqueue_scripts() {
     wp_enqueue_style('tubihome-style', get_stylesheet_uri(), [], '1.3');
-    if (is_singular('inmueble')) {
+    global $post;
+    $has_shortcode = false;
+    if (is_a($post, 'WP_Post') && has_shortcode($post->post_content ?? '', 'reporte_inmuebles')) {
+        $has_shortcode = true;
+    }
+    if (is_post_type_archive('inmueble') || $has_shortcode) {
         wp_enqueue_style('leaflet-css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
         wp_enqueue_script('leaflet-js', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', [], null, true);
+        // Asegúrate de que el archivo js/map-script.js existe en tu tema
+        wp_enqueue_script('tubihome-map-js', get_template_directory_uri() . '/js/map-script.js', ['leaflet-js'], '1.0', true);
     }
-    }
+}
 add_action('wp_enqueue_scripts', 'tubihome_enqueue_scripts');
 
 /**

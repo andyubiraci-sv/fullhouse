@@ -13,7 +13,37 @@ function updateResultCount() {
 
 // Hook: actualizar contador tras cargar inmuebles
 document.addEventListener('DOMContentLoaded', function() {
-    // ...existing code...
+    // --- Alternar mapa/lista en móvil ---
+    if (window.innerWidth <= 600) {
+        // Crear botón para alternar
+        let toggleBtn = document.getElementById('splitview-toggle-map');
+        if (!toggleBtn) {
+            toggleBtn = document.createElement('button');
+            toggleBtn.id = 'splitview-toggle-map';
+            toggleBtn.textContent = 'Ver mapa';
+            const main = document.querySelector('.main-content-split');
+            if (main) main.parentNode.insertBefore(toggleBtn, main);
+        }
+        const mapSection = document.querySelector('.map-section');
+        const resultsCol = document.querySelector('.results-column');
+        let mapVisible = false;
+        function updateView() {
+            if (mapVisible) {
+                mapSection?.classList.add('active');
+                resultsCol?.classList.add('hide-on-mobile');
+                toggleBtn.textContent = 'Ver lista';
+            } else {
+                mapSection?.classList.remove('active');
+                resultsCol?.classList.remove('hide-on-mobile');
+                toggleBtn.textContent = 'Ver mapa';
+            }
+        }
+        toggleBtn.onclick = function() {
+            mapVisible = !mapVisible;
+            updateView();
+        };
+        updateView();
+    }
     const grid = document.getElementById('inmuebles-grilla');
     if (grid) {
         const observer = new MutationObserver(function(){

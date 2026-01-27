@@ -3,7 +3,8 @@
 if (!defined('ABSPATH')) exit;
 
 
-function tubihome_shortcode_reporte_inmuebles($atts) {
+require_once __DIR__ . '/render-inmuebles-splitview.php';
+function tubihome_shortcode_reporte($atts) {
     $atts = shortcode_atts([
         'propiedad' => '',
         'operacion' => ''
@@ -11,46 +12,37 @@ function tubihome_shortcode_reporte_inmuebles($atts) {
     $tipo = sanitize_title($atts['propiedad']);
     $operacion = sanitize_text_field($atts['operacion']);
     if (!$tipo) return '<p>Debes especificar el tipo de propiedad.</p>';
-
     $term = get_term_by('slug', $tipo, 'tipo-propiedad');
     if (!$term) return '<p>No existe ese tipo de propiedad.</p>';
-
-        ob_start();
-        ?>
-        <div class="splitview-root">
-            <!-- Barra superior de filtros -->
-            <div class="splitview-filtros">
-                <input type="text" id="buscador-texto" class="buscador-texto" placeholder="Buscar por palabra clave..." />
-                <button class="chip-filtro" id="chip-tipo">Tipo</button>
-                <button class="chip-filtro" id="chip-operacion">Operación</button>
-                <button class="chip-filtro" id="btn-amenidades">Amenidades</button>
-                <div class="result-count" id="splitview-result-count">Cargando...</div>
-            </div>
-            <!-- Modal de Amenidades -->
-            <div id="modal-amenidades" class="modal-amenidades" style="display:none;">
-                <div class="modal-content">
-                    <span class="close-modal" id="close-modal-amenidades">&times;</span>
-                    <h3>Amenidades</h3>
-                    <div id="amenidades-container"></div>
-                </div>
-            </div>
-            <main class="main-content-split">
-                <section class="results-column">
-                    <h1 class="tipo-title"><?php echo esc_html($term->name); ?></h1>
-                    <div id="inmuebles-grilla" class="inmuebles-grilla" data-term="<?php echo esc_attr($term->slug); ?>" data-operacion="<?php echo esc_attr($operacion); ?>"></div>
-                    <div id="infinite-loader"><span>Cargando más propiedades...</span></div>
-                </section>
-                <aside class="map-section">
-                    <div id="splitview-map-container"></div>
-                    <button id="btn-buscar-area">Buscar en esta área</button>
-                </aside>
-            </main>
-        </div>
-        <script>window.tubihomeShortcodeOperacion = <?php echo json_encode($operacion); ?>;</script>
-        <?php
-        return ob_get_clean();
+    // Query de inmuebles filtrados
+    $args = [
+        'post_type' => 'inmueble',
+        'post_status' => 'publish',
+        'posts_per_page' => 30,
+        'tax_query' => [
+            [
+                'taxonomy' => 'tipo-propiedad',
+                'field' => 'slug',
+                'terms' => $term->slug
+            ]
+        ]
+    ];
+    if ($operacion) {
+        $args['tax_query'][] = [
+            'taxonomy' => 'tipo-operacion',
+            'field' => 'slug',
+            'terms' => $operacion
+        ];
+    }
+    $q = new WP_Query($args);
+    return tubihome_render_inmuebles_splitview($q, [
+        'title' => $term->name,
+        'term' => $term->slug,
+        'operacion' => $operacion,
+        'show_filters' => true
+    ]);
 }
-add_shortcode('reporte_inmuebles', 'tubihome_shortcode_reporte_inmuebles');
+add_shortcode('reporte_inmuebles', 'tubihome_shortcode_reporte');
 
 
 // Encolar JS y datos del shortcode solo si el shortcode está presente en el contenido
