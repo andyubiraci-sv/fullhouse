@@ -1,0 +1,4 @@
+/* Modal Amenidades */
+.modal-amenidades { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(20,90,55,0.18); z-index: 2000; display: flex; align-items: center; justify-content: center; }
+.modal-amenidades .modal-content { background: #fff; padding: 32px 24px; border-radius: 16px; box-shadow: 0 4px 32px 0 rgba(20,90,55,0.12); min-width: 320px; max-width: 90vw; position: relative; }
+.close-modal { position: absolute; top: 12px; right: 18px; font-size: 2rem; color: #145a37; cursor: pointer; }

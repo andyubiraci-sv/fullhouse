@@ -1,0 +1,15 @@
+/* Forzar visibilidad de controles de zoom de Leaflet */
+.leaflet-control-zoom {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 10000 !important;
+}
+
+/* Asegura que los botones sean visibles sobre el mapa */
+.leaflet-control-zoom a {
+  background: #fff !important;
+  color: #145a37 !important;
+  border: 1px solid #145a37 !important;
+  box-shadow: 0 2px 8px 0 rgba(20,90,55,0.10);
+}

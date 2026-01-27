@@ -4,6 +4,9 @@
 document.addEventListener('DOMContentLoaded', function() {
   const mapDiv = document.getElementById('splitview-map-container');
   if (!mapDiv) return;
+  // Evita doble inicialización
+  if (mapDiv.dataset.leafletInitialized) return;
+  mapDiv.dataset.leafletInitialized = '1';
   // Cargar Leaflet CSS y JS si no están presentes
   if (!window.L) {
     const link = document.createElement('link');
@@ -20,7 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function initMap() {
     // Centrar en El Salvador por defecto
-    const map = L.map(mapDiv).setView([13.7, -89.2], 11);
+    const map = L.map(mapDiv, { zoomControl: true }).setView([13.7, -89.2], 11);
+    // Asegura que los controles de zoom estén visibles en la esquina superior izquierda
+    map.zoomControl.setPosition('topleft');
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap',
       maxZoom: 18,

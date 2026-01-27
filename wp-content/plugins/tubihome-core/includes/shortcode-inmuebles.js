@@ -172,3 +172,39 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', onScroll);
     loadMore();
 });
+
+// Modal Amenidades
+var btnAmenidades = document.getElementById('btn-amenidades');
+var modalAmenidades = document.getElementById('modal-amenidades');
+var closeModal = document.getElementById('close-modal-amenidades');
+if (btnAmenidades && modalAmenidades && closeModal) {
+    btnAmenidades.onclick = function() {
+        modalAmenidades.style.display = 'flex';
+    };
+    closeModal.onclick = function() {
+        modalAmenidades.style.display = 'none';
+    };
+    window.addEventListener('click', function(e) {
+        if (e.target === modalAmenidades) {
+            modalAmenidades.style.display = 'none';
+        }
+    });
+}
+// Acordeón para amenidades
+var amenidades = document.getElementById('amenidades-container');
+if (amenidades) {
+    // Ejemplo de acordeón: puedes reemplazar esto por tu contenido dinámico
+    amenidades.innerHTML = '<button class="accordion">Amenidades generales</button><div class="panel"><label><input type="checkbox"> Piscina</label><br><label><input type="checkbox"> Jardín</label><br><label><input type="checkbox"> Gimnasio</label></div>';
+    var acc = amenidades.getElementsByClassName('accordion');
+    for (var i = 0; i < acc.length; i++) {
+        acc[i].onclick = function() {
+            this.classList.toggle('active');
+            var panel = this.nextElementSibling;
+            if (panel.classList.contains('show')) {
+                panel.classList.remove('show');
+            } else {
+                panel.classList.add('show');
+            }
+        };
+    }
+})
