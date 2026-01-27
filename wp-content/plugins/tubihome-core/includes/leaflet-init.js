@@ -1,3 +1,4 @@
+// ...existing code...
 // Inicialización de Leaflet para Split-View
 // Este script debe cargarse junto con el shortcode
 

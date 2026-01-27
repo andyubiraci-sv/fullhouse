@@ -37,6 +37,13 @@ function tubihome_render_inmuebles_splitview($query, $args = []) {
                             <?php
                             $lat = get_post_meta($post->ID, 'latitud', true);
                             $lng = get_post_meta($post->ID, 'longitud', true);
+                            // Si están vacíos, buscar en _geo_lat/_geo_lng
+                            if (empty($lat)) {
+                                $lat = get_post_meta($post->ID, '_geo_lat', true);
+                            }
+                            if (empty($lng)) {
+                                $lng = get_post_meta($post->ID, '_geo_lng', true);
+                            }
                             ?>
                             <article class="inmueble-card splitview-card" data-lat="<?php echo esc_attr($lat); ?>" data-lng="<?php echo esc_attr($lng); ?>" data-price="<?php echo esc_attr($price_k); ?>">
                                 <?php if (has_post_thumbnail($post->ID)) {

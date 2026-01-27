@@ -1,4 +1,6 @@
 <?php
+// Incluir diagnóstico de coordenadas en el admin
+require_once __DIR__ . '/includes/diagnostico-coordenadas-admin.php';
 // Incluir shortcodes personalizados
 require_once __DIR__ . '/includes/shortcodes.php';
 // Regla personalizada para /inmueble/{tipo}

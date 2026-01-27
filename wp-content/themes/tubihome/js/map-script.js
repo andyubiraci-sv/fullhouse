@@ -48,4 +48,8 @@ document.addEventListener('DOMContentLoaded', function() {
   if (cards.length > 0 && markersGroup.getLayers().length > 0) {
     map.fitBounds(markersGroup.getBounds(), { padding: [50, 50] });
   }
+  // Solución al conflicto de tamaño: forzar recalculo tras render
+  setTimeout(function() {
+    map.invalidateSize();
+  }, 400);
 });

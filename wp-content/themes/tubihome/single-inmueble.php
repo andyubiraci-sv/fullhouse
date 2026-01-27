@@ -429,6 +429,10 @@ document.addEventListener('DOMContentLoaded', function() {
         L.marker([lat, lng]).addTo(window.propertyMap)
             .bindPopup('Ubicación del inmueble')
             .openPopup();
+        // Forzar recalculo de tamaño tras render
+        setTimeout(function() {
+            window.propertyMap.invalidateSize();
+        }, 400);
     }
 });
 </script>
