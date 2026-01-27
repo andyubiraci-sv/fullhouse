@@ -109,11 +109,7 @@ function injectLatLngToCards(dataArr) {
 // Hook: después de cargar inmuebles, sincronizar mapa
 function afterCardsLoaded() {
     // Aquí deberías obtener los datos de lat/lng de los inmuebles vía AJAX
-    // Por ahora, simula con datos de ejemplo
-    // Ejemplo: [{lat:13.7,lng:-89.2}, ...]
-    // TODO: Reemplazar con datos reales
-    const dummy = Array.from(document.querySelectorAll('.splitview-card')).map((c,i)=>({lat:13.7+0.01*i,lng:-89.2+0.01*i}));
-    injectLatLngToCards(dummy);
+    // Si las tarjetas ya tienen data-lat y data-lng, solo sincroniza
     syncMapWithCards();
 }
 

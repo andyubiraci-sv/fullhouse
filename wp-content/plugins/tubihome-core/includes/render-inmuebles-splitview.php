@@ -28,12 +28,18 @@ function tubihome_render_inmuebles_splitview($query, $args = []) {
                 <div class="inmuebles-grilla" id="inmuebles-grilla" data-term="<?php echo esc_attr($args['term'] ?? ''); ?>" data-operacion="<?php echo esc_attr($args['operacion'] ?? ''); ?>">
                     <?php if ($posts): ?>
                         <?php foreach ($posts as $post): setup_postdata($post); ?>
-                            <article class="inmueble-card splitview-card" data-lat="<?php echo esc_attr(get_post_meta($post->ID, 'lat', true)); ?>" data-lng="<?php echo esc_attr(get_post_meta($post->ID, 'lng', true)); ?>" data-price="<?php echo esc_attr(get_post_meta($post->ID, 'precio', true)); ?>">
+                            <?php
+                            // Seguridad: precio limpio y formato k
+                            $price_raw = get_post_meta($post->ID, 'precio', true);
+                            $price_num = is_numeric($price_raw) ? (float)$price_raw : 0;
+                            $price_k = $price_num >= 1000 ? number_format($price_num / 1000, 0) . 'k' : number_format($price_num, 0);
+                            ?>
+                            <article class="inmueble-card splitview-card" data-lat="<?php echo esc_attr(get_post_meta($post->ID, 'lat', true)); ?>" data-lng="<?php echo esc_attr(get_post_meta($post->ID, 'lng', true)); ?>" data-price="<?php echo esc_attr($price_k); ?>">
                                 <?php if (has_post_thumbnail($post->ID)) {
                                     echo get_the_post_thumbnail($post->ID, 'medium');
                                 } ?>
                                 <h3><?php echo esc_html(get_the_title($post->ID)); ?></h3>
-                                <p class="price">$<?php echo number_format(get_post_meta($post->ID, 'precio', true)); ?></p>
+                                <p class="price">$<?php echo esc_html($price_k); ?></p>
                                 <a href="<?php echo esc_url(get_permalink($post->ID)); ?>">Ver Detalles</a>
                             </article>
                         <?php endforeach; wp_reset_postdata(); ?>
