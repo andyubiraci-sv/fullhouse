@@ -13,10 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     maxZoom: 18,
   }).addTo(map);
 
-  // Agrupador de marcadores
-  const markers = L.layerGroup().addTo(map);
-
-  // Leer tarjetas y crear pines
+  // Agrupador de marcadores y ajuste automático
+  const markersGroup = L.featureGroup();
   const cards = document.querySelectorAll('.inmueble-card');
   cards.forEach(card => {
     const lat = parseFloat(card.getAttribute('data-lat'));
@@ -39,10 +37,15 @@ document.addEventListener('DOMContentLoaded', function() {
             <a href="${link}" style="color:#145a37; font-size:12px;">Ver detalles</a>
           </div>
         `);
-      markers.addLayer(marker);
+      markersGroup.addLayer(marker);
       // Sincronizar hover
       card.addEventListener('mouseenter', () => marker.openPopup());
       card.addEventListener('mouseleave', () => marker.closePopup());
     }
   });
+  markersGroup.addTo(map);
+  // Ajuste automático de vista
+  if (cards.length > 0 && markersGroup.getLayers().length > 0) {
+    map.fitBounds(markersGroup.getBounds(), { padding: [50, 50] });
+  }
 });
