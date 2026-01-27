@@ -34,7 +34,11 @@ function tubihome_render_inmuebles_splitview($query, $args = []) {
                             $price_num = is_numeric($price_raw) ? (float)$price_raw : 0;
                             $price_k = $price_num >= 1000 ? number_format($price_num / 1000, 0) . 'k' : number_format($price_num, 0);
                             ?>
-                            <article class="inmueble-card splitview-card" data-lat="19.4326" data-lng="-99.1332" data-price="<?php echo esc_attr($price_k); ?>">
+                            <?php
+                            $lat = get_post_meta($post->ID, 'latitud', true);
+                            $lng = get_post_meta($post->ID, 'longitud', true);
+                            ?>
+                            <article class="inmueble-card splitview-card" data-lat="<?php echo esc_attr($lat); ?>" data-lng="<?php echo esc_attr($lng); ?>" data-price="<?php echo esc_attr($price_k); ?>">
                                 <?php if (has_post_thumbnail($post->ID)) {
                                     echo get_the_post_thumbnail($post->ID, 'medium');
                                 } ?>
