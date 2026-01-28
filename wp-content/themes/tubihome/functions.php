@@ -1,6 +1,3 @@
-
-
-
 <?php
 // Shortcode de diagnóstico: [debug_inmuebles]
 function tubihome_debug_inmuebles() {
@@ -310,3 +307,39 @@ function tubihome_save_post_inmueble($post_id) {
     }
 }
 add_action('save_post', 'tubihome_save_post_inmueble');
+
+// Notificación por email al admin y usuario cuando se crea o edita un inmueble desde el front-end
+add_action('pending_inmueble', function($post_id) {
+    $post = get_post($post_id);
+    if(!$post) return;
+    $user = get_userdata($post->post_author);
+    $admin_email = get_option('admin_email');
+    // Email al admin
+    $admin_subject = 'Nuevo inmueble pendiente de aprobación';
+    $admin_message = 'Hay un nuevo inmueble pendiente: '.get_the_title($post_id)."\nVer: ".admin_url('post.php?post='.$post_id.'&action=edit');
+    wp_mail($admin_email, $admin_subject, $admin_message);
+    // Email al usuario
+    $user_subject = 'Tu inmueble está en revisión';
+    $user_message = '¡Gracias por publicar! Tu inmueble "'.get_the_title($post_id).'" está en revisión. Te avisaremos cuando sea aprobado.';
+    wp_mail($user->user_email, $user_subject, $user_message);
+});
+
+// Notificación al usuario cuando el admin publica el inmueble
+add_action('publish_inmueble', function($post_id) {
+    $post = get_post($post_id);
+    if(!$post) return;
+    $user = get_userdata($post->post_author);
+    $user_subject = '¡Tu inmueble ya está publicado!';
+    $user_message = '¡Buenas noticias! Tu inmueble "'.get_the_title($post_id).'" ya está visible en la web.';
+    wp_mail($user->user_email, $user_subject, $user_message);
+});
+
+// Notificación al usuario si el inmueble es rechazado (borrador)
+add_action('draft_inmueble', function($post_id) {
+    $post = get_post($post_id);
+    if(!$post) return;
+    $user = get_userdata($post->post_author);
+    $user_subject = 'Tu inmueble necesita corrección';
+    $user_message = 'Tu inmueble "'.get_the_title($post_id).'" fue marcado como borrador. Por favor revisa y corrige los datos.';
+    wp_mail($user->user_email, $user_subject, $user_message);
+});

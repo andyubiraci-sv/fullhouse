@@ -41,29 +41,33 @@ add_filter('admin_post_thumbnail_html', 'tubihome_featured_image_required_text')
 // Validación previa al guardado: fuerza a borrador si faltan campos requeridos
 function tubihome_inmueble_force_draft($data, $postarr) {
     if ($data['post_type'] !== 'inmueble') return $data;
+    // Si el usuario es admin/editor con permiso de publicar, respetar el estado elegido
+    if (current_user_can('publish_inmuebles')) {
+        return $data;
+    }
     $faltantes = [];
     $post_id = isset($postarr['ID']) ? $postarr['ID'] : (isset($_POST['post_ID']) ? $_POST['post_ID'] : 0);
-    // Usar $_POST si existe, si no, get_post_meta
     $campos = [
-        'Precio' => isset($_POST['tubihome_price']) ? $_POST['tubihome_price'] : get_post_meta($post_id, '_price', true),
-        'Municipio' => isset($_POST['municipio']) ? $_POST['municipio'] : get_post_meta($post_id, 'municipio', true),
-        'Distrito' => isset($_POST['distrito']) ? $_POST['distrito'] : get_post_meta($post_id, 'distrito', true),
-        'Latitud' => isset($_POST['tubihome_geo_lat']) ? $_POST['tubihome_geo_lat'] : get_post_meta($post_id, '_geo_lat', true),
-        'Longitud' => isset($_POST['tubihome_geo_lng']) ? $_POST['tubihome_geo_lng'] : get_post_meta($post_id, '_geo_lng', true),
-        'Dirección completa' => isset($_POST['tubihome_address']) ? $_POST['tubihome_address'] : get_post_meta($post_id, '_address', true),
+        'Precio' => isset($_POST['field_precio']) ? $_POST['field_precio'] : get_post_meta($post_id, '_price', true),
+        'Municipio' => isset($_POST['field_municipio']) ? $_POST['field_municipio'] : get_post_meta($post_id, 'municipio', true),
+        'Distrito' => isset($_POST['field_distrito']) ? $_POST['field_distrito'] : get_post_meta($post_id, 'distrito', true),
+        'Latitud' => isset($_POST['field_lat']) ? $_POST['field_lat'] : get_post_meta($post_id, '_geo_lat', true),
+        'Longitud' => isset($_POST['field_lng']) ? $_POST['field_lng'] : get_post_meta($post_id, '_geo_lng', true),
+        'Dirección completa' => isset($_POST['field_address']) ? $_POST['field_address'] : get_post_meta($post_id, '_address', true),
     ];
     foreach ($campos as $label => $valor) {
-        // Permitir 0 como valor válido en campos numéricos
         if ($valor === '' || $valor === null) $faltantes[] = $label;
     }
+    // Solo usuarios sin permiso de publicar:
     // Si faltan campos y se intenta publicar, forzar a borrador
     if (!empty($faltantes) && $data['post_status'] === 'publish') {
         $data['post_status'] = 'draft';
     }
-    // Si NO faltan campos, siempre forzar a publicado
-    if (empty($faltantes)) {
-        $data['post_status'] = 'publish';
+    // Si no faltan campos y el usuario intenta publicar, forzar a pendiente (moderación)
+    if (empty($faltantes) && $data['post_status'] === 'publish') {
+        $data['post_status'] = 'pending';
     }
+    // Si el usuario guarda como borrador, respetar
     return $data;
 }
 add_filter('wp_insert_post_data', 'tubihome_inmueble_force_draft', 10, 2);
@@ -152,6 +156,24 @@ function tubihome_register_cpt_inmueble() {
         'rewrite' => array('slug' => 'propiedad'), // Cambia temporalmente el slug
         'supports' => array('title', 'editor', 'thumbnail'),
         'show_in_rest' => true,
+        'show_ui' => true, // SIEMPRE mostrar en admin
+        'show_in_menu' => true, // SIEMPRE mostrar en admin
+        'menu_position' => 5,
+        'menu_icon' => 'dashicons-admin-home',
+        // Forzar revisión manual: solo admin puede publicar
+        'capability_type' => 'post',
+        'map_meta_cap' => true,
+        'capabilities' => array(
+            'publish_posts' => 'publish_inmuebles',
+            'edit_posts' => 'edit_inmuebles',
+            'edit_others_posts' => 'edit_others_inmuebles',
+            'delete_posts' => 'delete_inmuebles',
+            'delete_others_posts' => 'delete_others_inmuebles',
+            'read_private_posts' => 'read_private_inmuebles',
+            'edit_post' => 'edit_inmueble',
+            'delete_post' => 'delete_inmueble',
+            'read_post' => 'read_inmueble',
+        ),
     );
     register_post_type('inmueble', $args);
 }
@@ -505,3 +527,20 @@ function tubihome_save_inmueble_meta($post_id) {
     }
 }
 add_action('save_post_inmueble', 'tubihome_save_inmueble_meta');
+
+
+// Al activar el plugin, asignar capacidades de inmuebles al rol administrador
+register_activation_hook(__FILE__, function() {
+    $role = get_role('administrator');
+    if ($role) {
+        $role->add_cap('publish_inmuebles');
+        $role->add_cap('edit_inmuebles');
+        $role->add_cap('edit_others_inmuebles');
+        $role->add_cap('delete_inmuebles');
+        $role->add_cap('delete_others_inmuebles');
+        $role->add_cap('read_private_inmuebles');
+        $role->add_cap('edit_inmueble');
+        $role->add_cap('delete_inmueble');
+        $role->add_cap('read_inmueble');
+    }
+});
