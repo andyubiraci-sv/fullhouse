@@ -376,3 +376,28 @@ article.inmueble-card.splitview-card {
     /* padding-bottom: 72px; */
     margin-bottom: 50px;
 }
+
+
+
+
+/* El contenedor principal ocupa el alto de la pantalla disponible */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 1fr 450px; /* Lista ancha, Mapa fijo */
+    height: calc(100vh - 80px); /* Resta la altura de tu Header/Menu */
+    overflow: hidden; /* Evita el scroll de la página completa */
+}
+
+/* La columna de propiedades tiene su propio scroll */
+.dashboard-list-container {
+    overflow-y: auto; /* Solo esta parte hace scroll */
+    height: 100%;
+    padding: 20px;
+}
+
+/* El mapa se queda pegado */
+#map-container {
+    height: 100%;
+    position: sticky;
+    top: 0;
+}

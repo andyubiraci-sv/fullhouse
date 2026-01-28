@@ -3,6 +3,7 @@
 Template Name: Gracias Publicación
 */
 get_header();
+echo '<link rel="stylesheet" href="'.get_template_directory_uri().'/css/wizard.css?v=1.0.0" type="text/css" media="all">';
 $post_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $post = get_post($post_id);
 if(!$post || $post->post_type!='inmueble') {

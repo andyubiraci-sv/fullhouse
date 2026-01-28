@@ -3,6 +3,8 @@
 Template Name: Publicar Inmueble (Wizard)
 */
 get_header();
+// Incluir CSS del wizard
+echo '<link rel="stylesheet" href="'.get_template_directory_uri().'/css/wizard.css?v=1.0.0" type="text/css" media="all">';
 if (!is_user_logged_in()) {
     wp_redirect(site_url('/acceso/'));
     exit;
@@ -298,6 +300,7 @@ if(isset($_POST['wizard_submit'])) {
                 <li><b>Título:</b> <?php echo esc_html($data['field_titulo']??''); ?></li>
                 <li><b>Descripción:</b> <?php echo esc_html($data['field_descripcion']??''); ?></li>
                 <li><b>Precio:</b> <?php echo esc_html($data['field_precio']??''); ?></li>
+                <li><b>Dirección completa:</b> <?php echo esc_html($data['field_address']??''); ?></li>
                 <li><b>Tipo de operación:</b> <?php echo esc_html($data['field_operacion']??''); ?></li>
                 <li><b>Municipio:</b> <?php echo esc_html($data['field_municipio']??''); ?></li>
                 <li><b>Distrito:</b> <?php echo esc_html($data['field_distrito']??''); ?></li>

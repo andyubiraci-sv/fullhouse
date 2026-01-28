@@ -8,10 +8,22 @@ if (!is_user_logged_in()) {
     exit;
 }
 $user_id = get_current_user_id();
+// Eliminar inmueble si se solicita y el usuario es el autor
+if (isset($_GET['delete'])) {
+    $del_id = intval($_GET['delete']);
+    $post = get_post($del_id);
+    if ($post && $post->post_type === 'inmueble' && $post->post_author == $user_id) {
+        wp_trash_post($del_id);
+        // Redirigir para evitar re-envío
+        wp_redirect(remove_query_arg('delete'));
+        exit;
+    }
+}
+echo '<link rel="stylesheet" href="'.get_template_directory_uri().'/css/wizard.css?v=1.0.0" type="text/css" media="all">';
 $args = array(
     'post_type' => 'inmueble',
     'author' => $user_id,
-    'post_status' => array('publish','pending','draft','trash'),
+    'post_status' => array('publish','pending','draft'), // Excluir 'trash'
     'posts_per_page' => -1
 );
 $inmuebles = get_posts($args);

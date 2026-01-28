@@ -1,0 +1,1062 @@
+/* Contenedor Principal */
+.wizard-container {
+    max-width: 850px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wizard-container h2 {
+    color: #1a202c;
+    font-size: 24px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 10px;
+}
+
+/* Estilo de los Campos de Entrada */
+.wizard-container input[type="text"],
+.wizard-container input[type="number"],
+.wizard-container textarea,
+.wizard-container select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #4a5568;
+    background-color: #f8fafc;
+    transition: all 0.3s ease;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+.wizard-container input:focus,
+.wizard-container textarea:focus,
+.wizard-container select:focus {
+    outline: none;
+    border-color: #3182ce;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.wizard-container textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Estilo de Etiquetas (Labels) */
+.wizard-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #2d3748;
+    font-size: 14px;
+}
+
+/* Grid para Municipio y Distrito (Lado a lado en escritorio) */
+@media (min-width: 600px) {
+    .wizard-container label[for="field_municipio"], 
+    .wizard-container label[for="field_distrito"] {
+        display: inline-block;
+        width: 48%;
+    }
+}
+
+/* Sección de Amenidades (Fieldset) */
+.wizard-container fieldset {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    background: #ffffff;
+}
+
+.wizard-container legend {
+    font-weight: bold;
+    color: #3182ce;
+    padding: 0 10px;
+}
+
+/* Checkboxes de Amenidades */
+.wizard-container fieldset div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+}
+
+.wizard-container fieldset label {
+    font-weight: normal;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.wizard-container fieldset label:hover {
+    background: #edf2f7;
+}
+
+.wizard-container fieldset input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Botón Siguiente */
+.wizard-nav {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.wizard-container button[name="wizard_next"] {
+    background-color: #3182ce;
+    color: white;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.wizard-container button[name="wizard_next"]:hover {
+    background-color: #2b6cb0;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+}
+
+/* Select Deshabilitado */
+.wizard-container select:disabled {
+    background-color: #edf2f7;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+
+/* Estilos específicos para el Paso 3: Imágenes */
+
+/* Ocultar o dar formato al bloque de Debug para que no estorbe */
+.wizard-container pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-family: monospace;
+    opacity: 0.7;
+}
+
+/* Contenedor del Input de Archivos */
+.wizard-container input[type="file"] {
+    display: block;
+    width: 100%;
+    padding: 30px;
+    background: #fdfdfd;
+    border: 2px dashed #cbd5e0;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.wizard-container input[type="file"]:hover {
+    border-color: #3182ce;
+    background-color: #f0f7ff;
+}
+
+/* Texto de ayuda debajo del input */
+.wizard-container small {
+    display: block;
+    color: #718096;
+    margin-bottom: 30px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Navegación (Botones Anterior y Siguiente) */
+.wizard-nav {
+    display: flex;
+    justify-content: space-between; /* Separa los botones a los extremos */
+    gap: 15px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #edf2f7;
+}
+
+/* Botón Siguiente (Primario) */
+.wizard-container button[name="wizard_next"] {
+    background-color: #3182ce;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-grow: 1; /* El botón principal toma más espacio si es necesario */
+    transition: background 0.2s;
+}
+
+.wizard-container button[name="wizard_next"]:hover {
+    background-color: #2b6cb0;
+}
+
+/* Botón Anterior (Secundario/Ghost) */
+.wizard-container button[name="wizard_prev"] {
+    background-color: #edf2f7;
+    color: #4a5568;
+    padding: 12px 30px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.wizard-container button[name="wizard_prev"]:hover {
+    background-color: #e2e8f0;
+    color: #2d3748;
+}
+
+/* Ajuste para dispositivos móviles */
+@media (max-width: 480px) {
+    .wizard-nav {
+        flex-direction: column-reverse; /* El botón 'Siguiente' queda arriba del 'Anterior' */
+    }
+    
+    .wizard-container button {
+        width: 100%;
+    }
+}
+
+/* Contenedor de Confirmación */
+.wizard-container h2 {
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.wizard-container p {
+    text-align: center;
+    color: #718096;
+    margin-bottom: 30px;
+    font-size: 15px;
+}
+
+/* Lista de Revisión (Resumen) */
+.wizard-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 30px auto;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden; /* Para que las esquinas de los li no sobresalgan */
+}
+
+.wizard-container ul li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #edf2f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    color: #4a5568;
+}
+
+.wizard-container ul li:last-child {
+    border-bottom: none;
+}
+
+.wizard-container ul li b {
+    color: #2d3748;
+    font-weight: 600;
+    min-width: 150px;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+/* Resaltado de datos clave */
+.wizard-container ul li:nth-child(3) { /* Precio */
+    background: #f0f7ff;
+    color: #2b6cb0;
+    font-weight: bold;
+}
+
+/* Botón Final "Publicar" */
+.wizard-container button[name="wizard_submit"] {
+    background-color: #48bb78; /* Verde éxito */
+    color: white;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    flex-grow: 2;
+    transition: all 0.3s ease;
+}
+
+.wizard-container button[name="wizard_submit"]:hover {
+    background-color: #38a169;
+    box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Estilo para el Debug (opcional, para que no moleste visualmente) */
+pre {
+    max-height: 150px;
+    overflow-y: auto;
+    border-radius: 5px;
+    opacity: 0.5;
+}
+
+/* Estilos para el Paso 2: Ubicación */
+
+/* Contenedor del Mapa */
+#wizard-map {
+    width: 100%;
+    height: 400px; /* Un poco más de altura ayuda a la usabilidad */
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    margin-bottom: 15px;
+    z-index: 1; /* Evita que el mapa se superponga a menús desplegables si los tienes */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Ajuste de texto informativo sobre el mapa */
+.wizard-container h2 + #wizard-map::before {
+    content: "Arrastra el marcador azul hasta la ubicación exacta:";
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+/* Personalización de los controles de Leaflet */
+.leaflet-bar {
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+}
+
+.leaflet-bar a {
+    background-color: #ffffff !important;
+    color: #2d3748 !important;
+    border-bottom: 1px solid #edf2f7 !important;
+    transition: background 0.2s;
+}
+
+.leaflet-bar a:hover {
+    background-color: #f7fafc !important;
+    color: #3182ce !important;
+}
+
+/* Estilos de los botones de navegación (coherencia) */
+.wizard-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.wizard-container button[name="wizard_prev"],
+.wizard-container button[name="wizard_next"] {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.wizard-container button[name="wizard_prev"] {
+    background-color: #edf2f7;
+    border: 1px solid #e2e8f0;
+    color: #4a5568;
+}
+
+.wizard-container button[name="wizard_next"] {
+    background-color: #3182ce;
+    border: none;
+    color: white;
+    flex-grow: 1;
+}
+
+.wizard-container button[name="wizard_next"]:hover {
+    background-color: #2b6cb0;
+}
+
+/* Fix para que el mapa no se rompa en contenedores flex/grid */
+.leaflet-container {
+    font-family: inherit;
+}
+
+/* Contenedor Principal de Edición */
+.edit-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.edit-container h2 {
+    color: #1a202c;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+/* Organización del Formulario */
+.edit-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Inputs y Selects */
+.edit-container input[type="text"],
+.edit-container input[type="number"],
+.edit-container textarea,
+.edit-container select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s;
+    background: #fdfdfd;
+}
+
+.edit-container input:focus, 
+.edit-container select:focus {
+    outline: none;
+    border-color: #3182ce;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+    background: #fff;
+}
+
+/* Textarea más alto para descripción */
+.edit-container textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Sección de Amenidades */
+.edit-container fieldset {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    background: #f8fafc;
+}
+
+.edit-container legend {
+    font-weight: bold;
+    color: #4a5568;
+    padding: 0 10px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.edit-container fieldset label {
+    font-size: 14px;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.edit-container fieldset label:hover {
+    background: #edf2f7;
+}
+
+/* Mapa de Edición */
+#edit-map {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Botones de Acción */
+.edit-container button[type="submit"] {
+    padding: 14px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 16px;
+}
+
+/* Guardar como Borrador */
+.edit-container button[name="edit_submit"]:not([value="1"]) {
+    background-color: #edf2f7;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+}
+
+.edit-container button[name="edit_submit"]:not([value="1"]):hover {
+    background-color: #e2e8f0;
+}
+
+/* Botón Publicar (El que tiene value="1") */
+.edit-container button[value="1"] {
+    background-color: #3182ce;
+    color: white;
+    margin-top: -10px; /* Pegarlo un poco al anterior o ajustarlo según layout */
+}
+
+.edit-container button[value="1"]:hover {
+    background-color: #2b6cb0;
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .edit-container {
+        padding: 15px;
+        margin: 10px;
+    }
+}
+
+
+/* Contenedor de la Tarjeta */
+.dashboard-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+
+/* Título del Inmueble */
+.dashboard-card h2 {
+    font-size: 18px;
+    color: #2d3748;
+    margin: 0;
+    flex-grow: 1;
+    font-weight: 600;
+}
+
+/* Badges de Estado (Publicado, Pendiente, etc.) */
+.dashboard-badge {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin: 0 20px;
+    letter-spacing: 0.5px;
+}
+
+.badge-success {
+    background-color: #def7ec;
+    color: #03543f;
+}
+
+/* Botones de Acción */
+.dashboard-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Botón Editar */
+.btn-sm:not(.btn-danger) {
+    background-color: #f7fafc;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+}
+
+.btn-sm:not(.btn-danger):hover {
+    background-color: #edf2f7;
+    color: #2b6cb0;
+    border-color: #3182ce;
+}
+
+/* Botón Eliminar */
+.btn-danger {
+    background-color: #fff5f5;
+    color: #c53030;
+    border: 1px solid #feb2b2;
+}
+
+.btn-danger:hover {
+    background-color: #c53030;
+    color: #ffffff;
+}
+
+/* Responsive: En móviles se apila verticalmente */
+@media (max-width: 600px) {
+    .dashboard-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .dashboard-badge {
+        margin: 0;
+    }
+
+    .dashboard-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+
+/* Botón Principal: Publicar Inmueble */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3182ce 0%, #2b6cb0 100%);
+    color: #ffffff !important;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 14px 0 rgba(49, 130, 206, 0.39);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(49, 130, 206, 0.45);
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(49, 130, 206, 0.3);
+}
+
+/* Icono opcional (si decides añadir un "+" dentro del <a> más adelante) */
+.btn-primary::before {
+    content: '+';
+    margin-right: 8px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+}
+
+/* Contenedor de posicionamiento (para ponerlo arriba a la derecha) */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 10px 0;
+}
+
+
+/* Badge para estados de error o rechazo */
+.badge-danger {
+    background-color: #fef2f2; /* Rojo muy suave de fondo */
+    color: #991b1b;           /* Rojo oscuro para el texto */
+    border: 1px solid #fee2e2;
+}
+
+/* Opcional: Dale un sutil borde izquierdo a la tarjeta rechazada 
+   para que resalte en la lista de un vistazo */
+.dashboard-card:has(.badge-danger) {
+    border-left: 4px solid #f87171;
+}
+
+/* Estilo para los botones dentro de una tarjeta rechazada */
+.dashboard-card:has(.badge-danger) .btn:not(.btn-danger) {
+    background-color: #3182ce; /* Resaltamos el botón Editar */
+    color: white;
+    border: none;
+}
+
+.dashboard-card:has(.badge-danger) .btn:not(.btn-danger):hover {
+    background-color: #2b6cb0;
+}
+
+
+/* Contenedor de Perfil */
+.dashboard-profile {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 500px;
+    margin: 20px 0;
+}
+
+.dashboard-profile h3 {
+    color: #2d3748;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 20px;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 10px;
+}
+
+/* Estructura del Formulario */
+.dashboard-profile form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.dashboard-profile label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #4a5568;
+}
+
+/* Inputs de Texto */
+.dashboard-profile input[type="text"] {
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #f8fafc;
+    transition: all 0.2s;
+}
+
+.dashboard-profile input[type="text"]:focus {
+    outline: none;
+    border-color: #3182ce;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+/* Input de Archivo (Foto) */
+.dashboard-profile input[type="file"] {
+    font-size: 13px;
+    color: #718096;
+    padding: 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    border: 1px dashed #cbd5e0;
+}
+
+/* Botón de Actualizar */
+.dashboard-profile button[name="update_profile"] {
+    background-color: #2d3748;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 10px;
+}
+
+.dashboard-profile button[name="update_profile"]:hover {
+    background-color: #1a202c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Contenedor Principal */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    /* Creamos dos columnas: 1/3 para perfil y 2/3 para inmuebles */
+    grid-template-columns: 750px 1fr; 
+    gap: 30px;
+    align-items: start;
+}
+
+/* Títulos de sección dentro del dashboard */
+.dashboard-container h1, 
+.dashboard-container h2 {
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.5px;
+}
+
+/* Columna de la izquierda (Perfil) */
+.dashboard-container .dashboard-profile {
+    position: sticky; /* Se queda fijo al hacer scroll */
+    top: 20px;
+    margin: 0; /* Quitamos el margen para que cuadre en el grid */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Columna de la derecha (Lista de Inmuebles) */
+.dashboard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Encabezado de la lista (Título + Botón Publicar) */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Responsivo para tablets y celulares */
+@media (max-width: 992px) {
+    .dashboard-container {
+        grid-template-columns: 1fr; /* Una sola columna */
+    }
+    
+    .dashboard-container .dashboard-profile {
+        position: static; /* Ya no se queda fijo */
+        max-width: 100%;
+    }
+}
+
+
+/* Contenedor de la lista de tarjetas */
+.dashboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Espacio uniforme entre cada tarjeta */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Estilo para cuando la lista está vacía (opcional) */
+.dashboard-list:empty::after {
+    content: "No tienes inmuebles publicados todavía.";
+    display: block;
+    padding: 40px;
+    text-align: center;
+    background: #f8fafc;
+    border: 2px dashed #e2e8f0;
+    border-radius: 12px;
+    color: #718096;
+    font-style: italic;
+}
+
+/* Animación de entrada para las tarjetas dentro de la lista */
+.dashboard-list .dashboard-card {
+    animation: fadeInSlide 0.4s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Delay escalonado para las primeras tarjetas (efecto cascada) */
+.dashboard-list .dashboard-card:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-list .dashboard-card:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-list .dashboard-card:nth-child(3) { animation-delay: 0.3s; }
+
+
+/* Contenedor de Éxito */
+.edit-success-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 40px;
+    text-align: center;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+/* Icono de Check (Opcional, mediante CSS) */
+.edit-success-container::before {
+    content: '✓';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background-color: #f0fff4;
+    color: #38a169;
+    font-size: 40px;
+    font-weight: bold;
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+}
+
+.edit-success-container h1 {
+    color: #2d3748;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.edit-success-container p {
+    color: #718096;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.edit-success-container b {
+    color: #2b6cb0;
+    font-weight: 600;
+}
+
+/* Acciones */
+.edit-success-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.edit-success-actions .btn {
+    background-color: #3182ce;
+    color: white !important;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.edit-success-actions .btn:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(49, 130, 206, 0.2);
+}
+
+/* Estilo para pantallas pequeñas */
+@media (max-width: 480px) {
+    .edit-success-container {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+}
+
+
+
+/* Contenedor de Gracias (Publicación Nueva) */
+.gracias-container {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.07);
+    border-top: 6px solid #38a169; /* Barra verde superior de éxito */
+}
+
+.gracias-container h1 {
+    color: #1a202c;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.gracias-container p {
+    color: #4a5568;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+/* Caja de Info Técnica (ID y Título) */
+.gracias-container p b {
+    color: #2d3748;
+}
+
+.gracias-container br + b {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+/* Contenedor de Botones */
+.gracias-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.gracias-actions .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 15px;
+}
+
+/* Botón 1: Publicar otro (Estilo secundario) */
+.gracias-actions .btn:nth-child(1) {
+    background: #edf2f7;
+    color: #2d3748;
+}
+
+/* Botón 2: Ir a mis propiedades (Estilo primario) */
+.gracias-actions .btn:nth-child(2) {
+    background: #3182ce;
+    color: #ffffff;
+}
+
+/* Botón 3: WhatsApp (Estilo específico) */
+.gracias-actions .btn:nth-child(3) {
+    background: #25d366; /* Verde oficial WhatsApp */
+    color: #ffffff;
+}
+
+.gracias-actions .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    filter: brightness(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .gracias-actions {
+        grid-template-columns: 1fr;
+    }
+}

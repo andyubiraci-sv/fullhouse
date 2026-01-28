@@ -1,12 +1,17 @@
 
+
 <?php
+// Incluir AJAX handler para scroll infinito
+require_once __DIR__ . '/splitview-infinite-ajax.php';
 // Encolar CSS y JS de splitview siempre que se use este render
 add_action('wp_enqueue_scripts', function() {
     if (is_admin()) return;
     wp_enqueue_style('tubihome-leaflet-zoom-fix', plugins_url('includes/leaflet-zoom-fix.css', __DIR__), [], '1.0');
     wp_enqueue_style('tubihome-splitview-modern', plugins_url('includes/splitview-modern.css', __DIR__), [], '1.0');
-
-
+    wp_enqueue_script('tubihome-splitview-infinite', plugins_url('includes/splitview-infinite.js', __DIR__), ['jquery'], '1.0', true);
+    wp_localize_script('tubihome-splitview-infinite', 'tubihome_splitview', [
+        'ajaxurl' => admin_url('admin-ajax.php')
+    ]);
 }, 20);
 // Función centralizada para renderizar la vista dividida de inmuebles (lista + mapa)
 // $query: instancia de WP_Query o array de posts
