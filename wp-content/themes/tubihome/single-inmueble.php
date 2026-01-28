@@ -30,18 +30,17 @@ wp_enqueue_style('dashicons');
     .detail-item .dashicons { color: #145a37; }
 
     /* Sidebar Mapa */
-    .sidebar-box { background: white; border: 1px solid #eee; border-radius: 20px; padding: 25px; position: sticky; top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    #property-map { width: 100%; height: 350px; border-radius: 15px; margin-top: 15px; border: 1px solid #ddd; }
-
+    .sidebar-box { background: white; border: 1px solid #eee; border-radius: 20px; padding: 0px; position: sticky; top: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+  
     @media (max-width: 992px) { .property-grid { grid-template-columns: 1fr; } #gallery-hero-img { height: 300px; } }
 </style>
 <style>
     /* Contenedor principal de la galería estilo Amazon */
     .amazon-gallery-container {
         display: flex;
-        gap: 15px;
+        gap: 0px;
         margin-bottom: 30px;
-        height: 500px; /* Altura fija para alinear ambos componentes */
+        height: 50vh; /* Altura fija para alinear ambos componentes */
     }
 
     /* Columna de miniaturas (Izquierda) */
@@ -80,7 +79,7 @@ wp_enqueue_style('dashicons');
         flex: 1;
         position: relative;
         border: 1px solid #eee;
-        border-radius: 8px;
+        border-radius: 20px;
         overflow: hidden;
         background: #fff;
         display: flex;
@@ -89,8 +88,8 @@ wp_enqueue_style('dashicons');
     }
 
     #amazon-main-img {
-        max-width: 100%;
-        max-height: 100%;
+       
+        max-height: 50vh;
         object-fit: contain; /* Para que no se corte la imagen como en Amazon */
         transition: opacity 0.3s;
     }
@@ -102,7 +101,7 @@ wp_enqueue_style('dashicons');
         z-index: 5;
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 0px;
     }
 
     @media (max-width: 768px) {
@@ -121,8 +120,8 @@ wp_enqueue_style('dashicons');
         $precio = get_post_meta($post_id, '_price', true);
 
         // Taxonomías
-        $op_name = wp_get_object_terms($post_id, 'tipo-operacion', ['fields'=>'names']);
-        $operacion = !empty($op_name) ? $op_name[0] : '';
+          $operacion =wp_get_object_terms($post_id, 'tipo-operacion', ['fields'=>'names']);
+       // $operacion = !empty($op_name) ? $op_name[0] : '';
         
         // Preparar Galería
         $gallery_raw = get_post_meta($post_id, '_gallery', true);
@@ -154,10 +153,30 @@ wp_enqueue_style('dashicons');
 
     <div class="amazon-main-view">
         <div class="amazon-badges">
-            <span class="badge-op" style="background:#e77600;"><?php echo esc_html($operacion); ?></span>
+                <?php
+                // Imprimir todas las variables del array $operacion
+                if (!empty($operacion) && is_array($operacion)) {
+                    foreach ($operacion as $op) {
+                        echo '<span class="badge-op" style="background:#e77600;">' . esc_html($op) . '</span><br>';
+                    }
+                } else {
+                    echo '<span class="badge-op" style="background:#e77600;">' . esc_html($operacion) . '</span>';
+                }
+                ?>
                      <span class="badge-price">$<?php echo is_numeric($precio) ? number_format((float)$precio) : $precio; ?></span>
         </div>
-        <img id="amazon-main-img" src="<?php echo esc_url($gallery_data[0]); ?>" alt="Producto principal">
+        <div style="position:absolute; top:15px; left:15px; z-index:10;">
+            <button id="zoom-btn" style="background:rgba(0,0,0,0.6); color:white; border:none; border-radius:50%; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px;">
+                <span class="dashicons dashicons-search"></span>
+            </button>
+        </div>
+        <img id="amazon-main-img" src="<?php echo esc_url($gallery_data[0]); ?>" alt="Producto principal" style="cursor:zoom-in;">
+
+        <!-- Lightbox -->
+        <div id="lightbox-modal" style="display:none; position:fixed; z-index:9999; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.85); align-items:center; justify-content:center;">
+            <span id="lightbox-close" style="position:absolute; top:30px; right:40px; color:white; font-size:40px; cursor:pointer;">&times;</span>
+            <img id="lightbox-img" src="" style="max-width:90vw; max-height:90vh; box-shadow:0 0 30px #000; border-radius:10px;">
+        </div>
     </div>
 </div>
 
@@ -166,6 +185,38 @@ wp_enqueue_style('dashicons');
 
                 <div class="property-header">
                     <h1><?php the_title(); ?></h1>
+ <div>
+                        <?php 
+                        $price_raw = get_post_meta($post->ID, '_price', true);
+                            $price_num = is_numeric($price_raw) ? (float)$price_raw : 0;
+                            $price_k = $price_num >= 1000 ? number_format($price_num / 1000, 0) . 'k' : number_format($price_num, 0);
+                            
+                         $area_post = get_post_meta($post->ID, '_area_total', true);
+                            $aprox_m2 = is_numeric($area_post) ? number_format((float)$area_post) . ' m²' : 'N/A';
+                            $valor_m2 = $area_post > 0 ? '$' . number_format($price_num / (float)$area_post, 2) . ' / m²' : 'N/A';
+                           
+
+                       $distrito   = get_post_meta($post->ID, 'distrito', true);
+$distrito = $distrito ? $distrito : 'Sin distrito';
+            echo "<bold>" . esc_html($distrito) . "</bold>";
+        
+$localidad   = get_post_meta($post->ID, 'municipio', true);
+$localidad = $localidad ? $localidad : 'Sin localidad';
+            echo "<bold>" . esc_html($localidad) . "</bold>";
+                        ?>
+                        <div class="splitview-microdetalles">
+                                    <span class="microdetalles-chip"> 
+   Superficie: <?php echo esc_html($aprox_m2); ?>
+
+                                    </span>
+<span class="microdetalles-chip">
+ Valor Unitario: <?php echo esc_html($valor_m2); ?>
+</span>
+
+                                 
+                                </div>
+                </div>
+
                 </div>
 
                 <div class="property-details-bar">
@@ -187,34 +238,54 @@ wp_enqueue_style('dashicons');
 
             <aside class="property-sidebar">
                 <div class="sidebar-box">
-                    <h3>Ubicación</h3>
+                  
                     <div id="property-map"></div>
-                    <div style="margin-top:20px;">
-                        <a href="https://wa.me/503XXXXXXXX" target="_blank" style="display:block; text-align:center; background:#25D366; color:white; padding:15px; border-radius:12px; text-decoration:none; font-weight:bold;">Contactar Agente</a>
-                    </div>
+                   
                 </div>
             </aside>
         </div>
 
         <script>
 
+
             function updateAmazonPhoto(url, thumbElement) {
-    const mainImg = document.getElementById('amazon-main-img');
-    
-    // Si la imagen ya es la misma, no hacer nada
-    if (mainImg.src === url) return;
+                const mainImg = document.getElementById('amazon-main-img');
+                // Si la imagen ya es la misma, no hacer nada
+                if (mainImg.src === url) return;
+                mainImg.style.opacity = '0.5';
+                setTimeout(() => {
+                    mainImg.src = url;
+                    mainImg.style.opacity = '1';
+                }, 150);
+                // Actualizar clase activa en miniaturas
+                document.querySelectorAll('.amazon-thumb').forEach(t => t.classList.remove('active'));
+                thumbElement.classList.add('active');
+                // Actualizar imagen de lightbox
+                document.getElementById('lightbox-img').src = url;
+            }
 
-    mainImg.style.opacity = '0.5';
-    
-    setTimeout(() => {
-        mainImg.src = url;
-        mainImg.style.opacity = '1';
-    }, 150);
+            // Lightbox funcionalidad
+            document.addEventListener('DOMContentLoaded', function() {
+                const zoomBtn = document.getElementById('zoom-btn');
+                const mainImg = document.getElementById('amazon-main-img');
+                const lightbox = document.getElementById('lightbox-modal');
+                const lightboxImg = document.getElementById('lightbox-img');
+                const lightboxClose = document.getElementById('lightbox-close');
 
-    // Actualizar clase activa en miniaturas
-    document.querySelectorAll('.amazon-thumb').forEach(t => t.classList.remove('active'));
-    thumbElement.classList.add('active');
-}
+                function openLightbox() {
+                    lightboxImg.src = mainImg.src;
+                    lightbox.style.display = 'flex';
+                }
+                function closeLightbox() {
+                    lightbox.style.display = 'none';
+                }
+                if (zoomBtn) zoomBtn.addEventListener('click', openLightbox);
+                if (mainImg) mainImg.addEventListener('click', openLightbox);
+                if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+                if (lightbox) lightbox.addEventListener('click', function(e) {
+                    if (e.target === lightbox) closeLightbox();
+                });
+            });
 
         // Lógica de Galería
         function changeHeroImage(url, thumb) {

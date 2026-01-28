@@ -6,7 +6,7 @@
 }
 /* Estructura moderna para splitview */
 .splitview-root { min-height: 100vh; background: #fff; }
-.splitview-filtros { position: sticky; top: 0; z-index: 10; background: #fff; padding: 12px 0 8px 0; box-shadow: 0 2px 12px 0 rgba(20,90,55,0.04); display: flex; align-items: center; gap: 12px; }
+.splitview-filtros { position: sticky; top: 0; z-index: 10; background: #fff; padding: 12px 0 8px 0; box-shadow: none; display: flex; align-items: center; gap: 12px; }
 .chips-filtros { display: flex; gap: 8px; flex-wrap: wrap; margin-left: 24px; }
 .result-count { margin-left: auto; margin-right: 24px; color: #145a37; font-weight: 600; font-size: 1.05rem; }
 #panel-amenidades { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(20,90,55,0.08); z-index: 1000; align-items: center; justify-content: center; }
@@ -23,7 +23,7 @@
   display: flex;
   flex-direction: row;
   min-height: 0;
-  height: calc(100vh - 70px);
+  height: calc(100vh - 250px);
 }
 .results-column {
   width: 60%;
@@ -139,4 +139,240 @@
 }
 .panel.show {
   display: block;
+}
+
+
+.inmuebles-grilla-split {
+display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.splitview-card h3 {
+    font-size: 14px;
+    padding: 0px 2px 0;
+    margin: 0;
+    color: #222;
+    font-weight: 600;
+    letter-spacing: 0.02rem;
+    text-align: left;
+}
+
+p.price {
+    padding: 0px 2px !important;
+    display: flex !important;
+    justify-content: flex-start;
+    font-size: 0.76rem;
+    flex-direction: row;
+}
+
+.splitview-card {
+    border: 0px solid #ebebeb;
+    border-radius: 12px;
+    padding: 0;
+    overflow: hidden;
+    background: white;
+    transition: box-shadow 0.3s ease;
+    box-shadow: none;
+}
+
+.splitview-card:hover {
+    box-shadow: 0 6px 16px rgb(0 0 0 / 9%);
+    transform: translateY(-1px);
+}
+
+
+
+img.attachment-medium.size-medium.wp-post-image {
+    min-width: 320px;
+    min-height: 320px;
+    object-fit: cover;
+    border-radius: 24px !important;
+}
+
+
+.splitview-card a {
+    display: flex;
+    margin: 0;
+    text-align: center;
+    padding: 0;
+    border-radius: 0px;
+    text-decoration: none;
+    color: #444;
+    font-size: 14px;
+    border: 0px;
+    flex-direction: column;
+    align-items: flex-start;
+    background: none !important;
+}
+
+.results-column {
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.inmuebles-grilla-split {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    align-items: start;
+    justify-content: center;
+    align-content: start;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+
+
+.splitview-card img {
+    max-width: 100%;
+    height: auto;
+    width: 100%;
+    border-radius: 7px;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    -ms-border-radius: 7px;
+    -o-border-radius: 7px;
+}
+
+.splitview-card img.attachment-medium.size-medium {
+    max-width: 100%;
+    height: auto;
+    min-height: 350px;
+    width: 100%;
+    display: flex;
+    object-fit: cover;
+     border-radius: 35px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+}
+
+article.inmueble-card.splitview-card {
+    width: 100%;
+    border-radius: 0px;
+    min-height: 30rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.card-image-container {
+    width: 100%;
+    background: #f0f0f0;
+}
+
+.splitview-microdetalles {
+    display: flex;
+}
+
+
+
+.card-image-container {
+ width: 100%;
+ 
+    background: none;
+    border-bottom: 0px;
+    position: relative;
+}
+
+p.price {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background: #145a37;
+    color: white;
+    padding: 6px 26px !important;
+    border-radius: 35px;
+    font-weight: 400 !important;
+    font-size: 1.125rem;
+    margin: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    color: #fff !important;
+}
+.inmueble-card h4 {
+  display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    line-height: 1.2;
+    margin: 0;
+    color: #333;
+    text-align: left;
+}
+
+.inmueble-card h4 svg {
+    flex-shrink: 0;      /* Evita que el icono se aplaste si el texto es largo */
+    fill: #145a37;       /* Color de tu marca para el icono */
+}
+
+
+
+.card-image-container h4 {
+    font-weight: 600;
+     letter-spacing: 0px !important;
+}
+
+.card-image-container h4 bold {
+    font-weight: 400;
+    display: block;
+    font-size: 14px;
+    letter-spacing: 0px !important;
+    text-align: left;
+}
+
+span.microdetalles-chip {
+    background: #14593712;
+    display: block;
+    padding: 4px;
+    font-size: 12px;
+    border-radius: 35px;
+    color: #27513cb5;
+     padding: 6px 16px !important;
+}
+
+.splitview-microdetalles {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 3px;
+}
+
+
+article.inmueble-card.splitview-card {
+        background: #889d9a0f;
+    gap: 10px;
+    padding: 9px;
+    border-radius: 35px;
+    padding-bottom: 11px;
+}
+
+.svg-cover-split {
+    padding: 6px;
+    background: #dfe5e2;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.splitview-card .card-image-container {
+
+ height: auto!important;
+ 
+}
+
+.splitview-root {
+    min-height: 0;
+    background: #fff;
+    height: calc(100vh - 250px);
+    /* padding-bottom: 72px; */
+    margin-bottom: 50px;
 }
